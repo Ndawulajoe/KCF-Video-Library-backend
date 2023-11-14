@@ -1,6 +1,6 @@
 const http = require('http');
 // import app from './app';
-const app = require('./app')
+const app = require('./src/app')
 const PORT = process.env.PORT || 3002;
 const server = http.createServer(app);
 
