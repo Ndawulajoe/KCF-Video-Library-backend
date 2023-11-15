@@ -71,12 +71,12 @@ router.get('/movies/:movieId', async (req, res) => {
 
 // Route to handle retrieving a specific movie by name
 router.get('/movies/name/:movieName', async (req, res) => {
-  const { movieName } = req.params;
+  const movieName = req.params.movieName; // Corrected parameter name
 
   try {
-    const movie = await prisma.movie.findUnique({
+    const movie = await prisma.movie.findFirst({
       where: {
-        title: movieName,
+        title: movieName, // Corrected key to match the Prisma model
       },
     });
 
@@ -90,6 +90,7 @@ router.get('/movies/name/:movieName', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
 
 // Route to handle editing a specific movie by ID
 router.put('/movies/:movieId', async (req, res) => {
@@ -117,6 +118,32 @@ router.put('/movies/:movieId', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
+// Route to handle retrieving a specific movie by name
+router.get('/movies/name/:movieName', async (req, res) => {
+  const { movieName } = req.params;
+
+  try {
+    const movie = await prisma.movie.findFirst({
+      where: {
+        title: movieName,
+      },
+    });
+
+    if (!movie) {
+      return res.status(404).send('Movie not found.');
+    }
+
+    res.json(movie);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+
+
 
 // Route to handle deleting a specific movie by ID
 router.delete('/movies/:movieId', async (req, res) => {
