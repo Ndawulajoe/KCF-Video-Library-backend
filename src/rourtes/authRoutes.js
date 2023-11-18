@@ -26,11 +26,11 @@ router.post(
   body('username').isString(),
   body('password').isString(),
   body('email').isEmail(),
-  body('firstName').isString(),
-  body('lastName').isString(),
+  body('first_Name').isString(), // Add validation for firstName
+  body('last_Name').isString(),  // Add validation for lastName
   validate,
   async (req, res) => {
-    const { username, password, email } = req.body;
+    const { username, password, email, first_name, last_name } = req.body;
 
     try {
       const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -39,8 +39,8 @@ router.post(
           username,
           password: hashedPassword,
           email,
-          lastName,
-          username
+          first_name,
+          last_name,  // Include lastName
         },
       });
 
