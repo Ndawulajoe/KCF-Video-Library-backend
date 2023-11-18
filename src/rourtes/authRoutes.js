@@ -23,9 +23,11 @@ const validate = (req, res, next) => {
 // Route to handle user signup
 router.post(
   '/signup',
-  body('username').isLength({ min: 5 }),
-  body('password').isLength({ min: 6 }),
+  body('username').isString(),
+  body('password').isString(),
   body('email').isEmail(),
+  body('firstName').isString(),
+  body('lastName').isString(),
   validate,
   async (req, res) => {
     const { username, password, email } = req.body;
@@ -37,6 +39,8 @@ router.post(
           username,
           password: hashedPassword,
           email,
+          lastName,
+          username
         },
       });
 
