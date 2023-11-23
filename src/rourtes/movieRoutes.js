@@ -23,7 +23,7 @@ router.post('/movies', async (req, res) => {
         price,
         rating,
         genre,
-        cover_image, // Assuming cover_image is a link
+        cover_image, 
       },
     });
 
@@ -71,12 +71,12 @@ router.get('/movies/:movieId', async (req, res) => {
 
 // Route to handle retrieving a specific movie by name
 router.get('/movies/name/:movieName', async (req, res) => {
-  const movieName = req.params.movieName; // Corrected parameter name
+  const movieName = req.params.movieName; 
 
   try {
     const movie = await prisma.movie.findFirst({
       where: {
-        title: movieName, // Corrected key to match the Prisma model
+        title: movieName, 
       },
     });
 

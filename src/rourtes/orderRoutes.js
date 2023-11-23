@@ -10,7 +10,7 @@ router.post('/orders', async (req, res) => {
     const { userId, movieId, quantity } = req.body;
   
     try {
-      // Fetch the movie and calculate the total price
+      
       const movie = await prisma.movie.findUnique({
         where: {
           id: parseInt(movieId),

@@ -1,4 +1,3 @@
-
 const express = require('express');
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
@@ -8,7 +7,7 @@ const { PrismaClient } = require('@prisma/client');
 const router = express.Router();
 const prisma = new PrismaClient();
 const saltRounds = 10;
-const jwtSecretKey = 'your_secret_key'; // Replace with a secure random string
+const jwtSecretKey = '';
 
 // Middleware to handle validation errors
 const validate = (req, res, next) => {
@@ -19,18 +18,18 @@ const validate = (req, res, next) => {
   next();
 };
 
-
 // Route to handle user signup
 router.post(
   '/signup',
   body('username').isString(),
   body('password').isString(),
   body('email').isEmail(),
-  body('first_Name').isString(), // Add validation for firstName
-  body('last_Name').isString(),  // Add validation for lastName
+  body('first_Name').isString(),
+  body('last_Name').isString(),
+  body('role').isIn(['ADMIN', 'USER']),
   validate,
   async (req, res) => {
-    const { username, password, email, first_name, last_name } = req.body;
+    const { username, password, email, first_name, last_name, role } = req.body;
 
     try {
       const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -40,7 +39,8 @@ router.post(
           password: hashedPassword,
           email,
           first_name,
-          last_name,  // Include lastName
+          last_name,
+          role,
         },
       });
 
@@ -56,7 +56,6 @@ router.post(
     }
   }
 );
-
 
 // Route to handle user login
 router.post('/login', async (req, res) => {
@@ -79,7 +78,7 @@ router.post('/login', async (req, res) => {
       return res.status(401).send('Invalid username or password.');
     }
 
-    const accessToken = jwt.sign({ username: user.username }, jwtSecretKey);
+    const accessToken = jwt.sign({ username: user.username, role: user.role }, jwtSecretKey);
 
     res.json({ accessToken });
   } catch (error) {
@@ -89,3 +88,4 @@ router.post('/login', async (req, res) => {
 });
 
 module.exports = router;
+
