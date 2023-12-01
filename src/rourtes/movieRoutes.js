@@ -1,17 +1,16 @@
-// movieRoutes.js
 
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
 const multer = require('multer');
 const path = require('path');
-// const fs = require('fs/promises');
+
 
 const router = express.Router();
 const prisma = new PrismaClient();
-// const uploadDir = path.join(__dirname, '../uploads');
+
 
 // Route to handle movie creation with image link
-router.post('/movies', async (req, res) => {
+router.post('/', async (req, res) => {
   const { title, description, director, price, rating, genre, cover_image } = req.body;
 
   try {
@@ -36,7 +35,7 @@ router.post('/movies', async (req, res) => {
 
 
 // Route to handle retrieving all movies
-router.get('/movies', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const movies = await prisma.movie.findMany();
     res.json(movies);
@@ -47,7 +46,7 @@ router.get('/movies', async (req, res) => {
 });
 
 // Route to handle retrieving a specific movie by ID
-router.get('/movies/:movieId', async (req, res) => {
+router.get('/:movieId', async (req, res) => {
   const { movieId } = req.params;
 
   try {
@@ -70,7 +69,7 @@ router.get('/movies/:movieId', async (req, res) => {
 
 
 // Route to handle retrieving a specific movie by name
-router.get('/movies/name/:movieName', async (req, res) => {
+router.get('/name/:movieName', async (req, res) => {
   const movieName = req.params.movieName; 
 
   try {
@@ -93,7 +92,7 @@ router.get('/movies/name/:movieName', async (req, res) => {
 
 
 // Route to handle editing a specific movie by ID
-router.put('/movies/:movieId', async (req, res) => {
+router.put('/:movieId', async (req, res) => {
   const { movieId } = req.params;
   const { title, description, director, price, rating, genre } = req.body;
 
@@ -120,7 +119,7 @@ router.put('/movies/:movieId', async (req, res) => {
 });
 
 // Route to handle retrieving a specific movie by name
-router.get('/movies/name/:movieName', async (req, res) => {
+router.get('/name/:movieName', async (req, res) => {
   const { movieName } = req.params;
 
   try {
@@ -146,7 +145,7 @@ router.get('/movies/name/:movieName', async (req, res) => {
 
 
 // Route to handle deleting a specific movie by ID
-router.delete('/movies/:movieId', async (req, res) => {
+router.delete('/:movieId', async (req, res) => {
   const { movieId } = req.params;
 
   try {

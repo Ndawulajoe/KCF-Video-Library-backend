@@ -6,7 +6,7 @@ const router = express.Router();
 const prisma = new PrismaClient();
 
 // Route to handle order creation
-router.post('/orders', async (req, res) => {
+router.post('/', async (req, res) => {
     const { userId, movieId, quantity } = req.body;
   
     try {
@@ -53,7 +53,7 @@ router.post('/orders', async (req, res) => {
   });
   
 // Route to handle retrieving all orders
-router.get('/orders', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const orders = await prisma.order.findMany();
     res.json(orders);
@@ -64,7 +64,7 @@ router.get('/orders', async (req, res) => {
 });
 
 // Route to handle retrieving a specific order by ID
-router.get('/orders/:orderId', async (req, res) => {
+router.get('/:orderId', async (req, res) => {
   const { orderId } = req.params;
 
   try {
@@ -87,7 +87,7 @@ router.get('/orders/:orderId', async (req, res) => {
 
 // Route to handle deleting a specific order by ID
 
-router.delete('/orders/:orderId', async (req, res) => {
+router.delete('/:orderId', async (req, res) => {
     const { orderId } = req.params;
   
     try {

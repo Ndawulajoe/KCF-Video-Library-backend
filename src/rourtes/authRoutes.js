@@ -3,11 +3,13 @@ const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { PrismaClient } = require('@prisma/client');
-
+// const { authenticateToken } = require('./src/routes/authenticateToken');
 const router = express.Router();
 const prisma = new PrismaClient();
 const saltRounds = 10;
-const jwtSecretKey = '';
+const jwtSecretKey = process.env.JWT_SECRET;
+const expiresIn = '12h'; 
+
 
 // Middleware to handle validation errors
 const validate = (req, res, next) => {
@@ -26,10 +28,10 @@ router.post(
   body('email').isEmail(),
   body('first_Name').isString(),
   body('last_Name').isString(),
-  body('role').isIn(['ADMIN', 'USER']),
+  // body('role').isIn(['ADMIN', 'USER']),
   validate,
   async (req, res) => {
-    const { username, password, email, first_name, last_name, role } = req.body;
+    const { username, password, email, first_name, last_name} = req.body;
 
     try {
       const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -40,7 +42,7 @@ router.post(
           email,
           first_name,
           last_name,
-          role,
+          // role,
         },
       });
 
@@ -78,9 +80,11 @@ router.post('/login', async (req, res) => {
       return res.status(401).send('Invalid username or password.');
     }
 
-    const accessToken = jwt.sign({ username: user.username, role: user.role }, jwtSecretKey);
+    
+    const accessToken = jwt.sign({ username: user.username }, jwtSecretKey, { expiresIn });
+    // const accessToken = jwt.sign({ username: user.username  }, jwtSecretKey);
 
-    res.json({ accessToken });
+    res.json({ accessToken ,userId: user.id});
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
