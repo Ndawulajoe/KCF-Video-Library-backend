@@ -7,9 +7,6 @@ const { PrismaClient } = require('@prisma/client');
 const router = express.Router();
 const prisma = new PrismaClient();
 const saltRounds = 10;
-const jwtSecretKey = process.env.JWT_SECRET;
-const expiresIn = '12h'; 
-
 
 // Middleware to handle validation errors
 const validate = (req, res, next) => {
@@ -81,7 +78,7 @@ router.post('/login', async (req, res) => {
       return res.status(401).send('Invalid username or password.');
     }
 
-    const accessToken = jwt.sign({ username: user.username, userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const accessToken = jwt.sign({ username: user.username, userId: user.id }, process.env.JWT_SECRET, { expiresIn: '12h' });
 
     res.json({ accessToken, userId: user.id });
   } catch (error) {
