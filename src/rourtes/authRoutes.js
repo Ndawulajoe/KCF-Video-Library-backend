@@ -59,40 +59,6 @@ router.post(
   }
 );
 
-// Route to handle user login
-// router.post('/login', async (req, res) => {
-//   const { username, password } = req.body;
-
-//   try {
-//     const user = await prisma.user.findUnique({
-//       where: {
-//         username,
-//       },
-//     });
-
-//     if (!user) {
-//       return res.status(401).send('Invalid username or password.');
-//     }
-
-//     const match = await bcrypt.compare(password, user.password);
-
-//     if (!match) {
-//       return res.status(401).send('Invalid username or password.');
-//     }
-
-    
-//     const accessToken = jwt.sign({ username: user.username }, jwtSecretKey, { expiresIn });
-//     // const accessToken = jwt.sign({ username: user.username  }, jwtSecretKey);
-
-//     res.json({ accessToken });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send('Internal Server Error');
-//   }
-// });
-
-// module.exports = router;
-
 
 
 router.post('/login', async (req, res) => {
