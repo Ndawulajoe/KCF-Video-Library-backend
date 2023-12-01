@@ -28,7 +28,7 @@ router.post(
   body('email').isEmail(),
   body('first_Name').isString(),
   body('last_Name').isString(),
-  body('role').isIn(['ADMIN', 'USER']),
+  // body('role').isIn(['ADMIN', 'USER']),
   validate,
   async (req, res) => {
     const { username, password, email, first_name, last_name} = req.body;
