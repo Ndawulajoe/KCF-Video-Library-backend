@@ -31,7 +31,7 @@ router.post(
   body('role').isIn(['ADMIN', 'USER']),
   validate,
   async (req, res) => {
-    const { username, password, email, first_name, last_name} = req.body;
+    const { username, password, email, first_name, last_name,role} = req.body;
 
     try {
       const hashedPassword = await bcrypt.hash(password, saltRounds);
